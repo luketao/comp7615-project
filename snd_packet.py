@@ -33,14 +33,16 @@ def sendPacket(packet, packetNum, SA):
 
 def encryptionList():
 	print "Authentication Algorithms: "
-	print "1. HMAC-­SHA1 (128-bit)"
-	print "2. HMAC-SHA1 (192-bit)"
-    	print "3. SHA2-­256"
-    	print "4. SHA2-­384"
-    	print "5. SHA2-­512"
+	print "1. HMAC-SHA1 (192-bit integrity key)"
+	print "2. SHA2-­256 (192-bit integrity key)"
+    	print "3. SHA2-­384 (192-bit integrity key)"
+    	print "4. SHA2-­512 (192-bit integrity key)"
     	print "\nEncryption Algorithms: "
-    	print "6. 3DES (128-bit)"
-    	print "7. 3DES (192-bit)"
-    	print "8. AES-CBC (128-bit)"
-    	print "9. AES-CBC (192-bit)"
-    	print "10. AES-CBC (256-bit)"
+    	print "5. 3DES (128-bit encryption key)"
+    	print "6. 3DES (192-bit encryption key)"
+    	print "7. AES-CBC (128-bit encryption key)"
+    	print "8. AES-CBC (192-bit encryption key)"
+    	print "9. AES-CBC (256-bit encryption key)"
+
+if __name__ = "__main__":
+	
