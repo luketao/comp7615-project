@@ -2,14 +2,23 @@
 
 from utils import *
 
-def processPacket(currentPkt, currentPktNum, prevPkt, SA):
+def writeArrivalToFile(arrivalPktTime):
+	with open('arrival_data.xlsx', 'a') as f:
+		f.write(arrivalPktTime + '\n')
+
+
+def processPacket(currentPkt, currentPktNum, SA):
 	startTime = time.time()
 	decryptedPacket = SA.decrypt(currentPkt)
 	decryptTime = time.time()
 
+	pktArrivalTime = str(currentPkt.time * 1000)
+
 	print "Packet Number #: " + str(currentPktNum)
 	print "Decryption Time: " + str((decryptTime - startTime) * 1000) + " ms"
-	print "Arrival Time: " + str((prevPkt.time - currentPkt.time) * 1000) + " ms"
+	print "Arrival Time: " + pktArrivalTime + " ms"
+
+	writeArrivalToFile(pktArrivalTime)
 
 def processArgs(argv):
 
@@ -52,6 +61,4 @@ if __name__ == "__main__":
 	capturedPacketList = sniff(filter=packetFilter)
 
 	for pkt in capturedPacketList:
-		if capturedPacketList.index(pkt) == 0:
-			continue
-		processPacket(pkt, capturedPacketList.index(pkt), pkt[capturedPacketList.index(pkt)-1], sa_header)
+		processPacket(pkt, capturedPacketList.index(pkt)+1, sa_header)

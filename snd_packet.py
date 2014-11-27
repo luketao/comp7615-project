@@ -3,28 +3,36 @@
 
 from utils import *
 
-def payloadGenerator(size=1):
+def payloadGenerator(size=1024):
 	return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
 
 def createPacket(srcHost, destHost):
 	p = IP(src=srcHost, dst=destHost)
-	randSrcPort = randDestPort = random.randint(1024, 65535)
-	p /= TCP(sport=randSrcPort, dport=randDestPort)
+	randSrcPort = random.randint(1024, 65535)
+	randDestPort = random.randint(1024, 65535)
+        p /= TCP(sport=randSrcPort, dport=randDestPort)
 	p /= Raw(payloadGenerator())
 	p = IP(str(p))
 
 	return p
 
+def writeSentToFile(sentPktTime):
+        with open('sent_data.xlsx', 'a') as f:
+                f.write(sentPktTime + '\n')
+
 def sendPacket(packet, packetNum, SA):
 	startTime = time.time()
 	encryptedPacket = SA.encrypt(packet)
 	encryptTime = time.time()
-	send(encryptedPacket)
-	sentTime = time.time()
+	
+        send(encryptedPacket)
+	sentTime = str(time.time() * 1000)
 
 	print "Packet #: " + str(packetNum)
 	print "Encryption Time: " + str((encryptTime - startTime) * 1000) + " ms"
-	print "Sent Time: " + str((sentTime - encryptTime) * 1000) + " ms"
+	print "Sent Time: " + sentTime + " ms"
+
+        writeSentToFile(sentTime)
 
 def displayHelp():
 	print 'Usage: snd_packet.py -s <src host> -d <dest host> [-p <dest port>] [-c <packet count sent>]'
