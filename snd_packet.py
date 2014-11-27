@@ -6,10 +6,10 @@ from utils import *
 def payloadGenerator(size=1):
 	return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
 
-def createPacket(srcHost, destHost, destPort):
+def createPacket(srcHost, destHost):
 	p = IP(src=srcHost, dst=destHost)
-	randSrcPort = random.randint(1024, 65535)
-	p /= TCP(sport=randSrcPort, dport=destPort)
+	randSrcPort = randDestPort = random.randint(1024, 65535)
+	p /= TCP(sport=randSrcPort, dport=randDestPort)
 	p /= Raw(payloadGenerator())
 	p = IP(str(p))
 
@@ -30,17 +30,15 @@ def displayHelp():
 	print 'Usage: snd_packet.py -s <src host> -d <dest host> [-p <dest port>] [-c <packet count sent>]'
       	print '-s or --srchost 	- the host you want to send from'
       	print '-d or --dsthost 	- the host you want to send to'
-      	print '-p or --dstport 	- the port you want to send to (default is 8000)'
       	print '-c or --count 	- the number of packets you want to send (default is 10)'
 
 def processArgs(argv):
 	srcHost = ''
    	destHost = ''
-   	destPort = 8000
    	count = 10
    	
    	try:
-      		opts, args = getopt.getopt(argv,"hs:d:p:c:",["srchost=","dsthost=","dstport=","count="])
+      		opts, args = getopt.getopt(argv,"hs:d:c:",["srchost=","dsthost=","count="])
    	except getopt.GetoptError:
       		displayHelp()	
       		sys.exit(2)
@@ -52,12 +50,6 @@ def processArgs(argv):
          		srcHost = arg
       		elif opt in ("-d", "--dsthost"):
          		destHost = arg
-         	elif opt in ("-p", "--dstport"):
-         		try:
-         			destPort = int(arg)
-         		except ValueError:
-         			displayHelp()
-         			sys.exit()
          	elif opt in ("-c", "--count"):
          		try:
          			count = int(arg)
@@ -69,14 +61,13 @@ def processArgs(argv):
 
         print "Src Host: " + srcHost
         print "Dest Host: " + destHost
-        print "Dest Port: " + str(destPort)
         print "Count: " + str(count)
         
         if srcHost is '' or destHost is '':
         	displayHelp()
         	sys.exit()
 
-       	return {'srcHost': srcHost, 'destHost': destHost, 'destPort': int(destPort), 'count' : int(count)}
+       	return {'srcHost': srcHost, 'destHost': destHost, 'count' : int(count)}
 
 
 
@@ -88,5 +79,5 @@ if __name__ == "__main__":
 	sa_header = processUser()
 
 	for packetN in range(1, userArgs['count'] + 1):
-		packet = createPacket(userArgs['srcHost'], userArgs['destHost'], userArgs['destPort'])
+		packet = createPacket(userArgs['srcHost'], userArgs['destHost'])
 		sendPacket(packet, packetN, sa_header)

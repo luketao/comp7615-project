@@ -54,4 +54,4 @@ if __name__ == "__main__":
 	for pkt in capturedPacketList:
 		if capturedPacketList.index(pkt) == 0:
 			continue
-		processPacket(pkt, capturedPacketList.index(pkt)+1, pkt[capturedPacketList.index(pkt)-1], sa_header)
+		processPacket(pkt, capturedPacketList.index(pkt), pkt[capturedPacketList.index(pkt)-1], sa_header)
