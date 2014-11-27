@@ -7,7 +7,6 @@ from scapy.layers.ipsec import *
 import string
 import time
 import sys, getopt
-from ipsec_algorithms import *
 import globals as keys
 
 def payloadGenerator(size=1024):
@@ -20,7 +19,6 @@ def createPacket(srcHost, destHost, destPort):
 	p /= Raw(payloadGenerator())
 	p = IP(str(p))
 
-	p.show()
 	return p
 
 def sendPacket(packet, packetNum, SA):
@@ -129,12 +127,12 @@ def processArgs(argv):
 if __name__ == "__main__":
 	keys.init_key_globals()
 	userArgs = processArgs(sys.argv[1:])
-	packet = createPacket(userArgs['srcHost'], userArgs['destHost'], userArgs['destPort'])
 
 	displayAlgoList()
 	sa_header = processUser()
 
 	for packetN in range(1, userArgs['count'] + 1):
+		packet = createPacket(userArgs['srcHost'], userArgs['destHost'], userArgs['destPort'])
 		sendPacket(packet, packetN, sa_header)
 
 
