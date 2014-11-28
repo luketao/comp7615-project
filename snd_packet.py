@@ -16,9 +16,9 @@ def createPacket(srcHost, destHost):
 
 	return p
 
-def writeSentToFile(sentPktTime):
+def writeSentToFile(sentPktTime, encryptTime):
         with open('sent_data.xlsx', 'a') as f:
-                f.write(sentPktTime + '\n')
+                f.write(sentPktTime + ',' + encryptTime + '\n')
 
 def sendPacket(packet, packetNum, SA):
 	startTime = time.time()
@@ -32,7 +32,9 @@ def sendPacket(packet, packetNum, SA):
 	print "Encryption Time: " + str((encryptTime - startTime) * 1000) + " ms"
 	print "Sent Time: " + sentTime + " ms"
 
-        writeSentToFile(sentTime)
+	encryptionTime = str((encryptTime - startTime) * 1000)
+
+        writeSentToFile(sentTime, encryptionTime)
 
 def displayHelp():
 	print 'Usage: snd_packet.py -s <src host> -d <dest host> [-p <dest port>] [-c <packet count sent>]'
