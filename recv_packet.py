@@ -2,9 +2,9 @@
 
 from utils import *
 
-def writeArrivalToFile(arrivalPktTime):
+def writeArrivalToFile(arrivalPktTime, decryptTime):
 	with open('arrival_data.xlsx', 'a') as f:
-		f.write(arrivalPktTime + '\n')
+		f.write(arrivalPktTime+ ','+ decryptTime + '\n')
 
 
 def processPacket(currentPkt, currentPktNum, SA):
@@ -17,8 +17,8 @@ def processPacket(currentPkt, currentPktNum, SA):
 	print "Packet Number #: " + str(currentPktNum)
 	print "Decryption Time: " + str((decryptTime - startTime) * 1000) + " ms"
 	print "Arrival Time: " + pktArrivalTime + " ms"
-
-	writeArrivalToFile(pktArrivalTime)
+	decryptionTime = str((decryptTime - startTime) * 1000)
+	writeArrivalToFile(pktArrivalTime, decryptionTime)
 
 def processArgs(argv):
 
@@ -57,8 +57,11 @@ if __name__ == "__main__":
 	displayAlgoList()
 	sa_header = processUser()
 
-	packetFilter = "host " + destHost
+	packetFilter = "ip and not icmp and host " + destHost
 	capturedPacketList = sniff(filter=packetFilter)
 
 	for pkt in capturedPacketList:
-		processPacket(pkt, capturedPacketList.index(pkt)+1, sa_header)
+		print pkt.summary()
+#		if(pkt.haslayer(IP)):
+#			print pkt[IP].dst
+		processPacket(pkt[IP], capturedPacketList.index(pkt), sa_header)
