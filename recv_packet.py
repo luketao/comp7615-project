@@ -62,6 +62,4 @@ if __name__ == "__main__":
 
 	for pkt in capturedPacketList:
 		print pkt.summary()
-#		if(pkt.haslayer(IP)):
-#			print pkt[IP].dst
 		processPacket(pkt[IP], capturedPacketList.index(pkt), sa_header)

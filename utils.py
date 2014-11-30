@@ -22,24 +22,15 @@ def processUser():
 		print "Invalid input."
 		sys.exit(2)
 
-
 	if choice == 1:
-		sa = SecurityAssociation(AH, spi=0xdeadbeef, auth_algo='HMAC-SHA1-96', auth_key=b192_key)
-	elif choice == 2:
-		sa = SecurityAssociation(AH, spi=0xdeadbeef, auth_algo='SHA2-256-128', auth_key=b192_key)
-	elif choice == 3:
-		sa = SecurityAssociation(AH, spi=0xdeadbeef, auth_algo='SHA2-384-192', auth_key=b192_key)
-	elif choice == 4:
-		sa = SecurityAssociation(AH, spi=0xdeadbeef, auth_algo='SHA2-512-256', auth_key=b192_key)
-	elif choice == 5:
 		sa = SecurityAssociation(ESP, spi=0xdeadbeef, crypt_algo='3DES', crypt_key=b128_key)
-	elif choice == 6:
+	elif choice == 2:
 		sa = SecurityAssociation(ESP, spi=0xdeadbeef, crypt_algo='3DES', crypt_key=b192_key)
-	elif choice == 7:
+	elif choice == 3:
 		sa = SecurityAssociation(ESP, spi=0xdeadbeef, crypt_algo='AES-CBC', crypt_key=b128_key)
-	elif choice == 8:
+	elif choice == 4:
 		sa = SecurityAssociation(ESP, spi=0xdeadbeef, crypt_algo='AES-CBC', crypt_key=b192_key)
-	elif choice == 9:
+	elif choice == 5:
 		sa = SecurityAssociation(ESP, spi=0xdeadbeef, crypt_algo='AES-CBC', crypt_key=b256_key)
 	else:
 		print "Invalid choice, try again."
@@ -48,14 +39,9 @@ def processUser():
 	return sa
 
 def displayAlgoList():
-	print "Authentication Algorithms: "
-	print "1. HMAC-SHA1 (192-bit integrity key)"
-	print "2. SHA2-256 (192-bit integrity key)"
-    	print "3. SHA2-384 (192-bit integrity key)"
-    	print "4. SHA2-512 (192-bit integrity key)"
     	print "\nEncryption Algorithms: "
-    	print "5. 3DES (128-bit encryption key)"
-    	print "6. 3DES (192-bit encryption key)"
-    	print "7. AES-CBC (128-bit encryption key)"
-    	print "8. AES-CBC (192-bit encryption key)"
-    	print "9. AES-CBC (256-bit encryption key)"
+    	print "1. 3DES (128-bit encryption key)"
+    	print "2. 3DES (192-bit encryption key)"
+    	print "3. AES-CBC (128-bit encryption key)"
+    	print "4. AES-CBC (192-bit encryption key)"
+    	print "5. AES-CBC (256-bit encryption key)"
